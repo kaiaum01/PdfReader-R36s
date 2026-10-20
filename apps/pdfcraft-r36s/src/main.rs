@@ -1,11 +1,9 @@
 //! Native, read-only PdfCraft renderer for the R36S frontend.
-use pdfcraft_render::{DocInfo, PageRenderer, RenderConfig, RenderRequest, RequestKind};
+use pdfcraft_render::{DocInfo, PageRenderer, RenderConfig, RenderRequest, RequestKind, Tile, device_pixels};
 use serde_json::{Value, json};
 use std::{fs, io::Write, path::{Path, PathBuf}, sync::Arc, thread, time::Duration};
 
 const MAX_FILE: u64 = 128 * 1024 * 1024;
-const MAX_SIDE: f32 = 2048.0;
-const MAX_PIXELS: f32 = 2_000_000.0;
 
 struct Document { info: DocInfo, renderer: PageRenderer }
 struct App { doc: Option<Document>, output: PathBuf }
@@ -32,7 +30,7 @@ impl App {
 
     fn handle(&mut self, v: &Value) -> Result<Value, String> {
         match string(v, "op")? {
-            "ping" => Ok(json!({"ok":true,"version":"0.1.0","engine":"PdfCraft 0.6.0 / hayro","arch":std::env::consts::ARCH})),
+            "ping" => Ok(json!({"ok":true,"version":"0.2.1","engine":"PdfCraft 0.6.0 / hayro","arch":std::env::consts::ARCH,"viewport_rendering":true})),
             "list" => {
                 let path = fs::canonicalize(string(v,"path")?).map_err(|e| e.to_string())?;
                 let mut entries = Vec::new();
@@ -84,9 +82,33 @@ impl App {
                 let is_text=v["op"]=="text";
                 let requested=v.get("scale").and_then(Value::as_f64).unwrap_or(1.0) as f32;
                 if !requested.is_finite() || requested<=0.0 {return Err("Zoom inválido.".into())}
-                let scale=requested.min(MAX_SIDE/info.width).min(MAX_SIDE/info.height)
-                    .min((MAX_PIXELS/(info.width*info.height)).sqrt());
-                let r=d.renderer.render(RenderRequest {page,scale,kind:if is_text {RequestKind::Text}else{RequestKind::Pixels},..Default::default()});
+                // Preserve requested resolution. Allocate only the visible region, never
+                // a full enlarged page. Page dimensions describe a virtual canvas.
+                let scale=requested;
+                for side in [info.width, info.height] {
+                    let pixels=side as f64 * scale as f64;
+                    if !pixels.is_finite() || pixels >= u32::MAX as f64 {
+                        return Err("Dimensão de zoom fora do intervalo de coordenadas.".into());
+                    }
+                }
+                let page_width=device_pixels(info.width,scale);
+                let page_height=device_pixels(info.height,scale);
+                let field=|name: &str, default: u32| -> Result<u32,String> {
+                    match v.get(name) {
+                        None => Ok(default),
+                        Some(n) => n.as_u64().and_then(|n|u32::try_from(n).ok())
+                            .ok_or_else(||format!("Coordenada inválida: {name}")),
+                    }
+                };
+                let x=field("x",0)?;
+                let y=field("y",0)?;
+                let w=field("width",640)?;
+                let h=field("height",480)?;
+                if x>=page_width || y>=page_height || w==0 || h==0 || w>4096 || h>4096 {
+                    return Err("Região de renderização inválida.".into());
+                }
+                let tile=Tile{x,y,w:w.min(page_width-x),h:h.min(page_height-y)};
+                let r=d.renderer.render(RenderRequest {page,scale,tile:if is_text {None}else{Some(tile)},kind:if is_text {RequestKind::Text}else{RequestKind::Pixels},..Default::default()});
                 if let Some(e)=r.error {return Err(e)}
                 if is_text {
                     let text=r.text.as_ref().map(|p|p.plain_text()).unwrap_or_default();
@@ -104,7 +126,7 @@ impl App {
                 }
                 let path=self.output.join("page.png");
                 atomic_write(&path,&png_bytes)?;
-                Ok(json!({"ok":true,"file":path.to_string_lossy(),"width":r.width,"height":r.height,"scale":scale,"page":page,"millis":r.millis,"limited":scale+0.00001<requested,"warnings":r.warnings.len()}))
+                Ok(json!({"ok":true,"file":path.to_string_lossy(),"width":r.width,"height":r.height,"scale":scale,"page":page,"page_width":page_width,"page_height":page_height,"x":x,"y":y,"millis":r.millis,"limited":false,"warnings":r.warnings.len()}))
             }
             "close"=>{self.doc=None;Ok(json!({"ok":true}))},
             "quit"=>Ok(json!({"ok":true})),
@@ -116,7 +138,7 @@ impl App {
 fn run() -> Result<(),String> {
     let args:Vec<_>=std::env::args().collect();
     if args.get(1).map(String::as_str)==Some("--version") {
-        println!("PdfCraft R36S 0.1.0 | {} | PdfCraft 0.6.0",std::env::consts::ARCH);return Ok(())
+        println!("PdfCraft R36S 0.2.1 | {} | PdfCraft 0.6.0 | viewport zoom",std::env::consts::ARCH);return Ok(())
     }
     let mode=args.get(1).map(String::as_str).unwrap_or("");
     if !["serve","probe"].contains(&mode) {return Err("Uso: pdfcraft-core serve PASTA_TEMP | probe PDF PASTA_SAIDA | --version".into())}
@@ -133,7 +155,7 @@ fn run() -> Result<(),String> {
         if render["ok"]!=true {return Err("Falha ao renderizar PDF.".into())}
         return Ok(())
     }
-    atomic_write(&out.join("ready.json"),br#"{"ok":true,"version":"0.1.0"}"#)?;
+    atomic_write(&out.join("ready.json"),br#"{"ok":true,"version":"0.2.1","viewport_rendering":true}"#)?;
     let input=out.join("request.json");
     loop {
         match fs::read(&input) {

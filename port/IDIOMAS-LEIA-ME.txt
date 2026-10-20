@@ -1,0 +1,37 @@
+PdfCraft R36S 0.2.2 — Português / English
+
+PORTUGUÊS
+Na primeira abertura, escolha Português (Brasil) ou English usando o
+direcional e confirme com A. A escolha fica salva; a tela de boas-vindas
+não será repetida nas próximas aberturas.
+
+A confirma/abre; B volta/cancela. Configurações antigas de inversão são
+migradas automaticamente, preservando documentos, favoritos e progresso.
+Para mudar o idioma depois, use START > Idioma / Language na biblioteca.
+Durante a leitura, use START > Mais opções > Idioma / Language.
+
+Extraia PdfCraft.sh e pdfcraft-r36s dentro de ports, substituindo os
+arquivos do aplicativo. Preserve seus PDFs e a pasta conf. Não precisa
+apagar as configurações antigas para corrigir A/B ou escolher o idioma.
+Uma instalação anterior sem idioma salvo mostrará as boas-vindas uma vez.
+
+O zoom por região até 32× continua disponível. O motor ARM64 0.2.1 é o
+mesmo validado na revisão de zoom; esta atualização altera a interface.
+O código-fonte completo está disponível no repositório GitHub.
+
+ENGLISH
+On first launch, use the D-pad to select Português (Brasil) or English,
+then press A. Your choice is saved and the welcome screen will not appear
+on subsequent launches.
+
+A confirms/opens; B goes back/cancels. Previous inverted-button settings
+are migrated automatically while keeping documents, favorites and progress.
+To change languages later, choose START > Idioma / Language in the library,
+or START > More options > Idioma / Language while reading.
+
+Extract PdfCraft.sh and pdfcraft-r36s into ports, replacing the application
+files. Keep your PDFs and the conf folder. Do not delete your old settings.
+An existing installation with no saved language shows the welcome screen
+once. Viewport zoom up to 32× remains available. Source code is available in the GitHub repository.
+
+Validated in LÖVE 11.5 with the ARM64 engine under emulation; operation on a physical R36S was confirmed by the maintainer on 2026-10-20. See TESTES-IDIOMAS.txt for the test results.

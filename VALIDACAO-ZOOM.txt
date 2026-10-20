@@ -1,0 +1,16 @@
+VALIDAÇÃO DA REVISÃO 0.2.1
+
+Executável ARM64 estático executado no QEMU com CPU Cortex-A35.
+Interface executada no LÖVE 11.5 em Linux x86_64, usando o motor ARM64 emulado.
+
+PASS: tile matches uncropped original renderer at identical scale
+PASS: 1x, virtual 616x924, tile 493x480
+PASS: 4x, virtual 2464x3696, tile 640x480
+PASS: 16x, virtual 9856x14784, tile 640x480
+PASS: 32x, virtual 19712x29568, tile 640x480
+PASS: scale extremes, invalid regions, text, page switching, close and quit
+
+PASS: LOVE 11.5 UI zoom 1x to 32x, distant pan, page edges, full screen, text, pages, fit, close
+
+
+Funcionamento no R36S físico confirmado pelo mantenedor em 20/10/2026. Os testes de emulação não medem seu desempenho real.

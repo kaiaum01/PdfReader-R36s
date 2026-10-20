@@ -1,20 +1,31 @@
 {
   "version": 4,
   "name": "pdfcraft-r36s.zip",
-  "items": ["PdfCraft.sh", "pdfcraft-r36s"],
+  "items": [
+    "PdfCraft.sh",
+    "pdfcraft-r36s"
+  ],
   "items_opt": [],
   "attr": {
     "title": "PdfCraft R36S",
-    "porter": ["Adaptação experimental"],
-    "desc": "Leitor de PDF com motor nativo ARM64 e interface em português para R36S. Zoom, modo texto, modo noturno e última página. Versão experimental 0.1, sem edição.",
+    "porter": [
+      "Adaptação experimental"
+    ],
+    "desc": "Leitor PDF ARM64 para R36S. Português e inglês, escolha de idioma na primeira abertura, A confirma e B volta. Zoom por região até 32× sem o antigo teto de 2 megapixels. Interface 0.2.2.",
     "inst": "Requer PortMaster e runtime LÖVE 11.5. Coloque PDFs em pdfcraft-r36s/documents.",
-    "genres": ["other"],
+    "genres": [
+      "other"
+    ],
     "rtr": true,
     "exp": true,
-    "runtime": ["love_11.5"],
+    "runtime": [
+      "love_11.5"
+    ],
     "store": [],
     "availability": "full",
     "reqs": [],
-    "arch": ["aarch64"]
+    "arch": [
+      "aarch64"
+    ]
   }
 }

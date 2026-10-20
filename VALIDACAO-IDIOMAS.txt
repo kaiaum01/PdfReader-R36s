@@ -1,0 +1,26 @@
+PdfCraft 0.2.2 — testes de idioma e controles
+
+LÖVE 11.5 em Linux x86_64 com motor ARM64 emulado em Cortex-A35.
+
+PASS first pt: welcome/persistence, A/B, translations, language menu, password controls
+
+PASS restart pt: welcome/persistence, A/B, translations, language menu, password controls
+
+PASS first en: welcome/persistence, A/B, translations, language menu, password controls
+
+PASS restart en: welcome/persistence, A/B, translations, language menu, password controls
+
+PASS migrate en: welcome/persistence, A/B, translations, language menu, password controls
+
+PASS migrate en: welcome/persistence, A/B, translations, language menu, password controls
+
+ALL LANGUAGE AND CONTROL TESTS PASSED
+
+Regressão do zoom:
+PASS: LOVE 11.5 UI zoom 1x to 32x, distant pan, page edges, full screen, text, pages, fit, close
+
+
+Verificação visual: boas-vindas 640×480, biblioteca, configurações e senha em inglês.
+O teste também simula falha ao salvar e confirma que a escolha inicial não é dispensada.
+Configurações antigas com swap=true e swap=false foram testadas.
+Funcionamento no R36S físico confirmado pelo mantenedor em 20/10/2026.

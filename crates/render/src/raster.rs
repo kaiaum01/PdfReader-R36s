@@ -308,7 +308,10 @@ fn render_page<'a>(
         let rs = match req.tile {
             // Tiles are bounded by construction, so the page itself may be arbitrarily large.
             Some(t) => {
-                let scale = req.scale.clamp(0.01, 400.0);
+                if !req.scale.is_finite() || req.scale <= 0.0 {
+                    return Err("invalid tile scale".into());
+                }
+                let scale = req.scale;
                 let (tw, th) = (t.w.clamp(1, 4096), t.h.clamp(1, 4096));
                 RenderSettings {
                     x_scale: scale,

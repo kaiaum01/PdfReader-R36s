@@ -1,0 +1,33 @@
+PdfCraft R36S — revisão de zoom 0.2.1
+
+O limite antigo de 2.000.000 de pixels / 2048 pixels por lado foi retirado
+do caminho de leitura. O zoom da interface continua indo até 32×, agora
+solicitando ao motor a resolução correspondente, sem reduzir a escala para
+caber numa imagem da página inteira.
+
+O app renderiza a região visível e uma margem de 128 pixels ao redor.
+Ao navegar, os próximos trechos são renderizados na mesma escala. Assim,
+uma página virtual de dezenas de milhares de pixels não precisa virar uma
+única textura gigante. Zoom e deslocamento funcionam também em tela cheia.
+
+INSTALAÇÃO
+Extraia PdfCraft.sh e a pasta pdfcraft-r36s sobre a instalação existente,
+dentro de ports. Substitua os arquivos do aplicativo, inclusive o motor em
+pdfcraft-r36s/bin. Mantenha seus documentos e a pasta conf.
+É necessário PortMaster com o runtime LÖVE 11.5.
+
+USO
+L2/R2: diminuir/aumentar zoom. Direcional ou analógico: mover a página.
+START abre Ferramentas, que também permite ampliar, reduzir e ajustar a
+página à tela. A confirma e B volta. Veja IDIOMAS-LEIA-ME.txt para os idiomas.
+
+OBSERVAÇÕES
+A RAM física continua sendo usada para interpretar o PDF e seus recursos.
+Esta mudança remove o limite artificial de resolução da página, não os
+limites físicos do console. Imagens já pouco nítidas no PDF não ganham
+detalhes ausentes no original. O limite de abertura de arquivos de 128 MB
+permanece independente do zoom.
+
+O código-fonte correspondente e o script de compilação estão no repositório
+GitHub. O executável é Linux ARM64 estático, compilado para
+Cortex-A35. Veja TESTES-ZOOM.txt para a validação realizada.
