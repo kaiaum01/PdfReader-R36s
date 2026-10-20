@@ -1,0 +1,51 @@
+PDFCRAFT R36S - 0.1 EXPERIMENTAL
+
+INSTALAÇÃO
+1. Copie PdfCraft.sh e a pasta pdfcraft-r36s para a pasta ports do cartão.
+   No ArkOS, normalmente é EASYROMS/ports (ou o cartão ROMS2).
+2. É necessário um sistema ARM64, PortMaster e seu runtime LÖVE 11.5.
+   Se faltar, instale LÖVE 11.5 em Gerenciar runtimes no PortMaster.
+3. Abra PdfCraft no menu Ports do R36S.
+4. O arquivo Boas-vindas.pdf já está incluído para o primeiro teste.
+5. Coloque seus PDFs em pdfcraft-r36s/documents. Em START também é
+   possível navegar por /roms e /roms2.
+
+CONTROLES
+A: confirmar / alternar ajuste à largura e página inteira.
+B: voltar / fechar o documento.
+Direcional e analógico esquerdo: mover a página ou percorrer a lista.
+L e R: página anterior e próxima página.
+L2 e R2: diminuir e aumentar zoom (ou fonte no modo texto).
+X: modo de leitura com texto reorganizado.
+Y: modo noturno.
+START: opções, acesso a uma página específica e troca de A/B.
+SELECT: sair.
+O mapeamento inicial considera A à direita e B embaixo. Se o firmware
+inverter os botões, use START > Trocar os botões A/B.
+
+O QUE ESTA VERSÃO TEM
+Motor nativo ARM64, baseado no renderizador original PdfCraft 0.6.0.
+Interface em 640 x 480, navegação por pastas, zoom, leitura de texto,
+modo noturno, última página por arquivo e PDFs protegidos por senha.
+O teclado de senha desta versão oferece caracteres ASCII.
+Os arquivos PDF originais são abertos somente para leitura.
+
+LIMITES DO TESTE
+Não é o editor Android completo: edição, OCR, voz, assinatura e câmera
+não estão incluídos. O modo texto requer texto selecionável no PDF.
+Arquivos limitados a 128 MB, até 20.000 páginas. Cada imagem renderizada
+fica limitada a aproximadamente 2 megapixels e 2048 pixels por lado.
+PDFs complexos podem demorar. SELECT encerra o app e o renderizador.
+Fontes CJK externas opcionais do projeto original não foram incluídas;
+fontes incorporadas ao PDF e as substitutas padrão estão disponíveis.
+
+DIAGNÓSTICO
+Se não abrir, envie o arquivo pdfcraft-r36s/log.txt e informe o sistema
+e a versão do PortMaster. Não é preciso enviar seu PDF particular.
+Se a tela mostrar erro de motor, saia com SELECT antes de tentar de novo.
+
+CÓDIGO E CRÉDITOS
+codigo-fonte.zip contém a adaptação e os componentes originais usados.
+O motor PdfCraft é de storytold e a versão Android de artcraft-android.
+As licenças e os créditos das dependências estão em pdfcraft-r36s/licenses.
+Esta adaptação é experimental e não é uma publicação oficial do PortMaster.

@@ -1,0 +1,37 @@
+PDFCRAFT R36S 0.1 - VERIFICAÇÃO DESTA COMPILAÇÃO
+Data: 20/10/2026
+
+COMPILAÇÃO
+Rust 1.99.0, perfil release, sem LTO.
+Alvo: aarch64-unknown-linux-musl, CPU Cortex-A35.
+Executável ELF64 AArch64 estático; não depende de glibc nem de outras
+bibliotecas dinâmicas para executar o motor PDF.
+A interface requer o runtime LÖVE 11.5 do PortMaster.
+
+TESTE DO EXECUTÁVEL ARM64
+Executado com QEMU 7.2, modelo de CPU Cortex-A35:
+- identificação da versão e da arquitetura: passou;
+- listagem de pastas e arquivos PDF: passou;
+- abertura de documento com 3 páginas: passou;
+- renderização de página em PNG: passou;
+- extração de texto com acentos em português: passou;
+- renderização de página horizontal com imagem e cores: passou;
+- limite de memória da imagem em zoom elevado: passou;
+- tratamento de número de página inválido: passou;
+- detecção de PDF protegido por senha: passou;
+- rejeição de senha incorreta: passou;
+- abertura e renderização de PDF AES-256 com senha válida: passou;
+- tratamento de caminho inexistente: passou;
+- fechamento de documento e encerramento do processo: passou.
+
+TESTE DA INTERFACE
+Executada com LÖVE 11.5 no ambiente de desenvolvimento, em 640 x 480,
+usando o motor ARM64 emulado. Telas de arquivos, leitura de PDF, modo
+texto e opções abriram sem erro e foram conferidas visualmente.
+Os scripts shell e os arquivos Lua passaram na verificação de sintaxe.
+
+AINDA PRECISA DE TESTE NO CONSOLE
+Não houve acesso físico a um R36S nesta execução. Portanto não foram
+medidos desempenho, consumo real de memória/bateria nem comportamento
+do driver de vídeo e do controle do seu firmware. Esta é uma compilação
+experimental para você testar, não uma garantia de compatibilidade.
